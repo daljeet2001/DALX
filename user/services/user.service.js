@@ -1,5 +1,5 @@
 import userModel from '../models/user.model.js';
-
+import {publishToQueue} from '../services/rabbit.js';
 
 
 export const createUser = async ({
@@ -16,6 +16,11 @@ export const createUser = async ({
         email,
         password: hashedPassword
     });
+    console.log(user);
+    
+    
+    const loguserid = user._id;       
+    publishToQueue('loguserid', JSON.stringify(loguserid));  
 
     return user;
 

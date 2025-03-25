@@ -3,7 +3,19 @@ import * as projectService from '../services/project.service.js';
 // import userModel from '../../user/models/user.model.js';
 import {subscribeToQueue} from '../services/rabbit.js';
 import { validationResult } from 'express-validator';
-// let userId;
+let userId;
+
+subscribeToQueue('loguserid', (data) => {
+    console.log('Message received: ', JSON.parse(data));
+    userId = JSON.parse(data);
+}   );
+
+subscribeToQueue('loguserid2', (data) => {
+    console.log('Message received: ', JSON.parse(data));
+    userId = JSON.parse(data);
+}   );
+
+
 
 export const createProject = async (req, res) => {
 
@@ -16,15 +28,7 @@ export const createProject = async (req, res) => {
     try {
 
         const { name } = req.body;
-        // const loggedInUser = await userModel.findOne({ email: req.user.email });
-        // const userId = loggedInUser._id;
-       
-        // subscribeToQueue('loguserid', (data) => {
-        //     console.log('Message received: ', JSON.parse(data));
-        //     userId = JSON.parse(data);
-        // }   );
-    
-
+   
         const newProject = await projectService.createProject({ name, userId });
 
         res.status(201).json(newProject);
@@ -33,20 +37,13 @@ export const createProject = async (req, res) => {
         console.log(err);
         res.status(400).send(err.message);
     }
-
-
-
 }
 
 export const getAllProject = async (req, res) => {
     try {
 
-        // const loggedInUser = await userModel.findOne({
-        //     email: req.user.email
-        // })
-
         const allUserProjects = await projectService.getAllProjectByUserId({
-            userId: loggedInUser._id
+            userId: userId
         })
 
         return res.status(200).json({
@@ -69,6 +66,7 @@ export const addUserToProject = async (req, res) => {
     try {
 
         const { projectId, users } = req.body
+        // console.log(projectId)
 
         // const loggedInUser = await userModel.findOne({
         //     email: req.user.email
@@ -78,7 +76,7 @@ export const addUserToProject = async (req, res) => {
         const project = await projectService.addUsersToProject({
             projectId,
             users,
-            userId: loggedInUser._id
+            userId:userId
         })
 
         return res.status(200).json({

@@ -17,11 +17,7 @@ export const createUserController = async (req, res) => {
 
         const token = await user.generateJWT();
 
-        // const loggedInUser = await userModel.findOne({ email: req.user.email });
-        // const loguserid = loggedInUser._id;
-        // if(loguserid){
-        //     publishToQueue('loguserid', JSON.stringify(loguserid));     
-        // }
+       
 
         delete user._doc.password;
 
@@ -67,7 +63,7 @@ export const loginController = async (req, res) => {
         // }
 
         delete user._doc.password;
-
+         publishToQueue('loguserid2', JSON.stringify(user));  
         res.status(200).json({ user, token });
 
 

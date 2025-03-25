@@ -12,11 +12,11 @@ const port = process.env.PORT || 8083;
 
 
 const server = http.createServer(app);
-const io = new Server(server, {
-    cors: {
-        origin: '*'
-    }
-});
+// const io = new Server(server, {
+//     cors: {
+//         origin: '*'
+//     }
+// });
 
 
 // io.use(async (socket, next) => {

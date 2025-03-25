@@ -6,12 +6,12 @@ import { validationResult } from 'express-validator';
 let userId;
 
 subscribeToQueue('loguserid', (data) => {
-    console.log('Message received: ', JSON.parse(data));
+    // console.log('Message received: ', JSON.parse(data));
     userId = JSON.parse(data);
 }   );
 
 subscribeToQueue('loguserid2', (data) => {
-    console.log('Message received: ', JSON.parse(data));
+    // console.log('Message received: ', JSON.parse(data));
     userId = JSON.parse(data);
 }   );
 

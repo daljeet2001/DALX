@@ -117,7 +117,7 @@ export const getProjectById = async ({ projectId }) => {
     const project = await projectModel.findOne({
         _id: projectId
     })  
-    console.log(project)
+    // console.log(project)
 
     return project;
 }

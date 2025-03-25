@@ -4,10 +4,11 @@ import connect from './db/db.js';
 import userRoutes from './routes/user.routes.js';
 // import projectRoutes from './routes/project.routes.js';
 // import aiRoutes from './routes/ai.routes.js';
+import { connectmq } from './services/rabbit.js';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
 connect();
-
+connectmq();
 
 const app = express();
 

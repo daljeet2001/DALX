@@ -2,6 +2,7 @@ import userModel from '../models/user.model.js';
 import * as userService from '../services/user.service.js';
 import { validationResult } from 'express-validator';
 import redisClient from '../services/redis.service.js';
+import {publishToQueue} from '../services/rabbit.js';
 
 
 export const createUserController = async (req, res) => {
@@ -15,6 +16,12 @@ export const createUserController = async (req, res) => {
         const user = await userService.createUser(req.body);
 
         const token = await user.generateJWT();
+
+        // const loggedInUser = await userModel.findOne({ email: req.user.email });
+        // const loguserid = loggedInUser._id;
+        // if(loguserid){
+        //     publishToQueue('loguserid', JSON.stringify(loguserid));     
+        // }
 
         delete user._doc.password;
 
@@ -52,6 +59,12 @@ export const loginController = async (req, res) => {
         }
 
         const token = await user.generateJWT();
+
+        // const loggedInUser = await userModel.findOne({ email: req.user.email });
+        // const loguserid = loggedInUser._id;
+        // if(loguserid){
+        //     publishToQueue('loguserid', JSON.stringify(loguserid));     
+        // }
 
         delete user._doc.password;
 

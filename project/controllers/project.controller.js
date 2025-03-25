@@ -1,8 +1,9 @@
 import projectModel from '../models/project.model.js';
 import * as projectService from '../services/project.service.js';
 // import userModel from '../../user/models/user.model.js';
+import {subscribeToQueue} from '../services/rabbit.js';
 import { validationResult } from 'express-validator';
-
+// let userId;
 
 export const createProject = async (req, res) => {
 
@@ -15,8 +16,14 @@ export const createProject = async (req, res) => {
     try {
 
         const { name } = req.body;
-        const loggedInUser = await userModel.findOne({ email: req.user.email });
-        const userId = loggedInUser._id;
+        // const loggedInUser = await userModel.findOne({ email: req.user.email });
+        // const userId = loggedInUser._id;
+       
+        // subscribeToQueue('loguserid', (data) => {
+        //     console.log('Message received: ', JSON.parse(data));
+        //     userId = JSON.parse(data);
+        // }   );
+    
 
         const newProject = await projectService.createProject({ name, userId });
 
@@ -34,9 +41,9 @@ export const createProject = async (req, res) => {
 export const getAllProject = async (req, res) => {
     try {
 
-        const loggedInUser = await userModel.findOne({
-            email: req.user.email
-        })
+        // const loggedInUser = await userModel.findOne({
+        //     email: req.user.email
+        // })
 
         const allUserProjects = await projectService.getAllProjectByUserId({
             userId: loggedInUser._id
@@ -63,9 +70,9 @@ export const addUserToProject = async (req, res) => {
 
         const { projectId, users } = req.body
 
-        const loggedInUser = await userModel.findOne({
-            email: req.user.email
-        })
+        // const loggedInUser = await userModel.findOne({
+        //     email: req.user.email
+        // })
 
 
         const project = await projectService.addUsersToProject({

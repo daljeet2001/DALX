@@ -42,6 +42,7 @@ const Project = () => {
 
     const [ currentFile, setCurrentFile ] = useState(null)
     const [ openFiles, setOpenFiles ] = useState([])
+    const [emails, setEmails] = useState([])
 
     const [ webContainer, setWebContainer ] = useState(null)
     const [ iframeUrl, setIframeUrl ] = useState(null)
@@ -111,6 +112,7 @@ const Project = () => {
 
     useEffect(() => {
 
+
         initializeSocket(project._id)
 
         if (!webContainer) {
@@ -153,6 +155,17 @@ const Project = () => {
             setProject(res.data.project)
             setFileTree(res.data.project.fileTree || {})
         })
+        
+        axios.post('/users/get-user-email', {
+            userIds: project.users
+        }).then(res => {
+            console.log(res.data)
+            setEmails(res.data.emails);
+
+        }).catch(err => {
+            console.log(err)
+        })
+       
         
 
         axios.get('/users/all').then(res => {
@@ -240,7 +253,7 @@ const Project = () => {
                     </header>
                     <div className="users flex flex-col gap-2">
 
-                        {project.users && project.users.map(user => {
+                        {emails && emails.map(email => {
 
 
                             return (
@@ -248,7 +261,7 @@ const Project = () => {
                                     <div className='aspect-square rounded-full w-fit h-fit flex items-center justify-center p-5 text-white bg-slate-600'>
                                         <i className="ri-user-fill absolute"></i>
                                     </div>
-                                    <h1 className='font-semibold text-lg'>{user.email}</h1>
+                                    <h1 className='font-semibold text-lg'>{email}</h1>
                                 </div>
                             )
 

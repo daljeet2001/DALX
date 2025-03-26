@@ -32,3 +32,8 @@ export const getAllUsers = async ({ userId }) => {
     });
     return users;
 }
+
+export const getUserEmailsByIds = async (userIds) => {
+    const users = await userModel.find({ _id: { $in: userIds } }, 'email');
+    return users.map(user => user.email);
+};

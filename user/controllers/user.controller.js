@@ -122,3 +122,19 @@ export const getAllUsersController = async (req, res) => {
 
     }
 }
+
+export const getUserEmailsController = async (req, res) => {
+    try {
+        const { userIds } = req.body;
+        if (!Array.isArray(userIds) || userIds.length === 0) {
+            return res.status(400).json({ error: 'User IDs must be a non-empty array' });
+        }
+
+        const emails = await userService.getUserEmailsByIds(userIds);
+
+        res.status(200).json({ emails });
+    } catch (err) {
+        console.log(err);
+        res.status(400).json({ error: err.message });
+    }
+};
